@@ -49,6 +49,7 @@ from symforce.values import Values
 
 import sympy as sp
 from utils.derivation_utils import *
+from lat_lon_alt import LatLonAlt
 
 # Initialize parser
 parser = argparse.ArgumentParser()
@@ -63,7 +64,7 @@ args = parser.parse_args()
 State = Values(
     quat_nominal = sf.Rot3(),
     vel = sf.V3(),
-    pos = sf.V3(),
+    pos = LatLonAlt(),
     gyro_bias = sf.V3(),
     accel_bias = sf.V3(),
     mag_I = sf.V3(),
@@ -520,7 +521,7 @@ def compute_mag_declination_pred_innov_var_and_h(
     return (meas_pred, innov_var, H.T)
 
 def predict_hagl(state):
-    return state["terrain"][0] - state["pos"][2]
+    return state["terrain"][0] + state["pos"].alt
 
 def predict_opt_flow(state, epsilon):
     R_to_body = state["quat_nominal"].inverse()

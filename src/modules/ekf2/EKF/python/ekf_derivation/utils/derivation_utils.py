@@ -35,6 +35,7 @@ Description:
 """
 
 import symforce.symbolic as sf
+from lat_lon_alt import LatLonAlt
 
 import re
 
@@ -100,6 +101,8 @@ def build_state_struct(state, T="float"):
             return f"matrix::Vector3<{T}>"
         elif isinstance(obj, sf.Rot3):
             return f"matrix::Quaternion<{T}>"
+        elif isinstance(obj, LatLonAlt):
+            return f"LatLonAlt"
         else:
             print(f"unknown type {type(obj)}")
             raise NotImplementedError
